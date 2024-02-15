@@ -168,8 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundObject: {fileID: 1423243465}
-  laneAmount: 3
-  scaleMultiplier: 8
+  laneAmount: 5
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,9 +504,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5adb63a5cec38364688dbb0e40a8950c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input: {fileID: 0}
-  changeLineSpeed: 10
-  laneManager: {fileID: 0}
+  input: {fileID: 11400000, guid: 3089d64e469288742b6682370ecdd2ab, type: 2}
+  changeLineSpeed: 40
+  moveSpeed: 10
+  laneManager: {fileID: 150021517}
+  playerRb: {fileID: 987190856}
 --- !u!1 &1423243461
 GameObject:
   m_ObjectHideFlags: 0

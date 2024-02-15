@@ -5,10 +5,10 @@ public class GroundSplit : MonoBehaviour
     public Transform groundObject;
 
     [Range(0, 5)]
-    public int laneAmount = 3;
+    public int laneAmount;
 
     private float[] lanePositions;
-    public float scaleMultiplier = 8f;
+    private float scaleMultiplier = 8f;
 
     void Start()
     {
@@ -35,10 +35,5 @@ public class GroundSplit : MonoBehaviour
             Debug.LogError("Invalid lane index");
             return -10;
         }
-    }
-
-    void Update()
-    {
-        Debug.Log(GetLanePosition(0) + " " + GetLanePosition(1) + " " + GetLanePosition(2));
     }
 }

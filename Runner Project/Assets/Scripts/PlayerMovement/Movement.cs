@@ -1,3 +1,4 @@
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -7,10 +8,17 @@ public class Movement : MonoBehaviour
 
     [SerializeField]
     [Range(0f, 50f)]
-    private float changeLineSpeed = 10f;
+    private float changeLineSpeed;
+
+    [SerializeField]
+    [Range(0f, 50f)]
+    private float moveSpeed;
 
     [SerializeField]
     private GroundSplit laneManager;
+
+    [SerializeField]
+    private Rigidbody playerRb;
     private int currentLane = 1;
     private float direction;
     private bool isMoving = false;
@@ -41,6 +49,11 @@ public class Movement : MonoBehaviour
                 isMoving = false;
             }
         }
+    }
+
+    void FixedUpdate(){
+        Vector3 forwardMove = transform.forward * moveSpeed * Time.fixedDeltaTime;
+        playerRb.MovePosition(playerRb.position + forwardMove);
     }
 
     void MoveToLane(int laneIndex)
