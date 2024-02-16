@@ -21,11 +21,25 @@ public class MovementController : InputController
 
     public override bool RetrieveJumpInput()
     {
-        return Input.GetKeyDown(KeyCode.UpArrow);
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public override bool RetrieveRollInput()
     {
-        return Input.GetKeyDown(KeyCode.DownArrow);
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
