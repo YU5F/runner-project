@@ -6,9 +6,8 @@ public class GroundSplit : MonoBehaviour
 
     [Range(0, 5)]
     public int laneAmount;
-
     private float[] lanePositions;
-    private float scaleMultiplier = 8f;
+    private readonly float scaleMultiplier = 8f;
 
     void Start()
     {
