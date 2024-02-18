@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 150021516}
   - component: {fileID: 150021517}
   - component: {fileID: 150021518}
+  - component: {fileID: 150021519}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -184,8 +185,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lowObstaclePrefab: {fileID: 6716801049817664176, guid: 77bc18fa6b5913c46ac5ea9dd92d1ae5, type: 3}
   wallObstaclePrefab: {fileID: 5415314763009485060, guid: ed7563bca72e00e4db135f33c89f912c, type: 3}
-  timeBetweenPatterns: 3
   lanes: {fileID: 150021517}
+--- !u!114 &150021519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150021515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0a317079fd54c74394f3d62f9a091fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolLength: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,7 +431,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!136 &987190857
 CapsuleCollider:
@@ -435,7 +448,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2

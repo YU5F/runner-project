@@ -9,19 +9,17 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField]
     private GameObject wallObstaclePrefab;
-
-    [SerializeField]
-    [Range(0f, 10f)]
-    private float timeBetweenPatterns = 3f;
-    private int patternLength = 3;
+    private int checkCount = 0;
     private float[] spawnPointsX;
-    private static float spawnPointZ = 10f;
+    private float spawnPointZ = 20f;
     public GroundSplit lanes;
-
-    private List<GameObject> activeObstacles = new List<GameObject>();
+    private int maxObject = 29;
+    private ObjectPool objectPool;
 
     void Start()
     {
+        objectPool = FindObjectOfType<ObjectPool>();
+
         spawnPointsX = new float[3];
 
         for (int i = 0; i <= 2; i++)
@@ -34,8 +32,8 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnObstacles()
     {
-        while (true)
-        {
+        // if (maxObject > objectPool.poolLength)
+        // {
             int[] pattern = GenerateRandomPattern();
 
             for (int i = 0; i < spawnPointsX.Length; i++)
@@ -50,11 +48,22 @@ public class SpawnManager : MonoBehaviour
                 {
                     SpawnWallObstacle(i);
                 }
-                yield return new WaitForSeconds(0f);
-                spawnPointZ += 20;
+
+                yield return new WaitForSeconds(0.1f);
+
+                if (checkCount < spawnPointsX.Length)
+                {
+                    checkCount++;
+                }
+                else
+                {
+                    checkCount = 0;
+                    spawnPointZ += 10;
+                }
             }
+            StartCoroutine(SpawnObstacles());
             yield return null;
-        }
+    //    }
     }
 
     private int[] GenerateRandomPattern()
@@ -78,21 +87,23 @@ public class SpawnManager : MonoBehaviour
 
     private void SpawnLowObstacle(int spawnPointIndex)
     {
-        GameObject obstacle = Instantiate(
-            lowObstaclePrefab,
-            new Vector3(spawnPointsX[spawnPointIndex], 0, spawnPointZ),
-            Quaternion.identity
+        GameObject obstacle = objectPool.GetObject(lowObstaclePrefab);
+        BoxCollider obstacleCollider = obstacle.GetComponent<BoxCollider>();
+        obstacle.transform.position = new Vector3(
+            spawnPointsX[spawnPointIndex],
+            obstacleCollider.size.y * 0.5f * 1.8f,
+            spawnPointZ
         );
-        activeObstacles.Add(obstacle);
     }
 
     private void SpawnWallObstacle(int spawnPointIndex)
     {
-        GameObject obstacle = Instantiate(
-            wallObstaclePrefab,
-            new Vector3(spawnPointsX[spawnPointIndex], 0, spawnPointZ),
-            Quaternion.identity
+        GameObject obstacle = objectPool.GetObject(wallObstaclePrefab);
+        BoxCollider obstacleCollider = obstacle.GetComponent<BoxCollider>();
+        obstacle.transform.position = new Vector3(
+            spawnPointsX[spawnPointIndex],
+            obstacleCollider.size.y * 0.5f * 4,
+            spawnPointZ
         );
-        activeObstacles.Add(obstacle);
     }
 }
