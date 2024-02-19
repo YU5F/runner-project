@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -12,6 +10,10 @@ public class SpawnManager : MonoBehaviour
     private float spawnPointZ = 20f;
     public GroundSplit lanes;
     private ObjectPool objectPool;
+
+    [SerializeField]
+    [Range(10f, 100f)]
+    private int maxObject = 30;
 
     public enum ObstacleType
     {
@@ -35,32 +37,37 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnObstacles()
     {
-        // if (maxObject > objectPool.poolLength)
-        // {
-        int[] pattern = GenerateRandomPattern();
-
-        for (int i = 0; i < spawnPointsX.Length; i++)
+        while (true)
         {
-            int obstacleTypeIndex = pattern[i];
-
-            ObstacleType obstacleType = (ObstacleType)obstacleTypeIndex;
-
-            SpawnObstace(obstacleType, i);
-
-            yield return new WaitForSeconds(0f);
-
-            if (checkCount < spawnPointsX.Length)
+            if (objectPool.poolLength < maxObject)
             {
-                checkCount++;
+                int[] pattern = GenerateRandomPattern();
+
+                for (int i = 0; i < spawnPointsX.Length; i++)
+                {
+                    int obstacleTypeIndex = pattern[i];
+
+                    ObstacleType obstacleType = (ObstacleType)obstacleTypeIndex;
+
+                    SpawnObstacle(obstacleType, i);
+
+                    yield return new WaitForSeconds(0f);
+
+                    if (checkCount < spawnPointsX.Length)
+                    {
+                        checkCount++;
+                    }
+                    else
+                    {
+                        checkCount = 0;
+                        spawnPointZ += 10;
+                    }
+                }
             }
-            else
-            {
-                checkCount = 0;
-                spawnPointZ += 10;
+            else{
+                yield return new WaitForSeconds(0f);
             }
         }
-        StartCoroutine(SpawnObstacles());
-        //    }
     }
 
     private int[] GenerateRandomPattern()
@@ -82,9 +89,10 @@ public class SpawnManager : MonoBehaviour
         return pattern;
     }
 
-    private void SpawnObstace(ObstacleType type, int spawnPointIndex)
+    private void SpawnObstacle(ObstacleType type, int spawnPointIndex)
     {
-        if((int)type == -1){
+        if ((int)type == -1)
+        {
             return;
         }
 

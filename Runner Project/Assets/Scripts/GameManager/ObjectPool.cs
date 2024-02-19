@@ -7,6 +7,7 @@ public class ObjectPool : MonoBehaviour
     private Dictionary<string, Queue<GameObject>> objectPool =
         new Dictionary<string, Queue<GameObject>>();
 
+    public int poolLength = 0;
     public GameObject GetObject(GameObject gameObject)
     {
         if (objectPool.TryGetValue(gameObject.name, out Queue<GameObject> objectList))
@@ -19,6 +20,7 @@ public class ObjectPool : MonoBehaviour
             {
                 GameObject _object = objectList.Dequeue();
                 _object.SetActive(true);
+                poolLength++;
                 return _object;
             }
         }
@@ -32,6 +34,7 @@ public class ObjectPool : MonoBehaviour
     {
         GameObject newGO = Instantiate(gameObject);
         newGO.name = gameObject.name;
+        poolLength++;
         return newGO;
     }
 
@@ -48,5 +51,6 @@ public class ObjectPool : MonoBehaviour
             objectPool.Add(gameObject.name, newObjectQueue);
         }
         gameObject.SetActive(false);
+        poolLength--;
     }
 }
