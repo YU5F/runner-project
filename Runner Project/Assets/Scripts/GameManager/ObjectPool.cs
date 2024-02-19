@@ -30,12 +30,6 @@ public class ObjectPool : MonoBehaviour
 
     private GameObject CreateNewObject(GameObject gameObject)
     {
-        if (objectPool.Count >= 10)
-        {
-            Debug.LogWarning("Object pool is at maximum capacity.");
-            return null;
-        }
-
         GameObject newGO = Instantiate(gameObject);
         newGO.name = gameObject.name;
         return newGO;

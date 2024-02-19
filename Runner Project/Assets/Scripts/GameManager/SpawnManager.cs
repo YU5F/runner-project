@@ -1,28 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject lowObstaclePrefab;
-
-    [SerializeField]
-    private GameObject wallObstaclePrefab;
+    private GameObject[] obstaclePrefabs;
     private int checkCount = 0;
     private float[] spawnPointsX;
     private float spawnPointZ = 20f;
     public GroundSplit lanes;
-    private int maxObject = 29;
     private ObjectPool objectPool;
+
+    public enum ObstacleType
+    {
+        Low,
+        Wall
+    }
 
     void Start()
     {
         objectPool = FindObjectOfType<ObjectPool>();
 
-        spawnPointsX = new float[3];
+        spawnPointsX = new float[lanes.laneAmount];
 
-        for (int i = 0; i <= 2; i++)
+        for (int i = 0; i < spawnPointsX.Length; i++)
         {
             spawnPointsX[i] = lanes.GetLanePosition(i);
         }
@@ -34,75 +37,75 @@ public class SpawnManager : MonoBehaviour
     {
         // if (maxObject > objectPool.poolLength)
         // {
-            int[] pattern = GenerateRandomPattern();
+        int[] pattern = GenerateRandomPattern();
 
-            for (int i = 0; i < spawnPointsX.Length; i++)
+        for (int i = 0; i < spawnPointsX.Length; i++)
+        {
+            int obstacleTypeIndex = pattern[i];
+
+            ObstacleType obstacleType = (ObstacleType)obstacleTypeIndex;
+
+            SpawnObstace(obstacleType, i);
+
+            yield return new WaitForSeconds(0f);
+
+            if (checkCount < spawnPointsX.Length)
             {
-                int obstacleType = pattern[i];
-
-                if (obstacleType == 1)
-                {
-                    SpawnLowObstacle(i);
-                }
-                else if (obstacleType == 2)
-                {
-                    SpawnWallObstacle(i);
-                }
-
-                yield return new WaitForSeconds(0.1f);
-
-                if (checkCount < spawnPointsX.Length)
-                {
-                    checkCount++;
-                }
-                else
-                {
-                    checkCount = 0;
-                    spawnPointZ += 10;
-                }
+                checkCount++;
             }
-            StartCoroutine(SpawnObstacles());
-            yield return null;
-    //    }
+            else
+            {
+                checkCount = 0;
+                spawnPointZ += 10;
+            }
+        }
+        StartCoroutine(SpawnObstacles());
+        //    }
     }
 
     private int[] GenerateRandomPattern()
     {
         int[] pattern = new int[spawnPointsX.Length];
 
-        pattern[0] = Random.Range(0, 3);
+        pattern[0] = Random.Range(-1, obstaclePrefabs.Length);
 
-        for (int i = 1; i < spawnPointsX.Length; i++)
+        for (int i = 1; i < pattern.Length; i++)
         {
-            int obstacleType = Random.Range(0, 3);
+            int obstacleType = Random.Range(-1, obstaclePrefabs.Length);
 
-            if (pattern[i - 1] == 2 && obstacleType == 2)
+            if (pattern[i - 1] == 1 && obstacleType == 1)
             {
-                obstacleType = Random.Range(0, 2);
+                obstacleType = Random.Range(-1, 1);
             }
             pattern[i] = obstacleType;
         }
         return pattern;
     }
 
-    private void SpawnLowObstacle(int spawnPointIndex)
+    private void SpawnObstace(ObstacleType type, int spawnPointIndex)
     {
-        GameObject obstacle = objectPool.GetObject(lowObstaclePrefab);
-        BoxCollider obstacleCollider = obstacle.GetComponent<BoxCollider>();
-        obstacle.transform.position = new Vector3(
-            spawnPointsX[spawnPointIndex],
-            obstacleCollider.size.y * 0.5f * 1.8f,
-            spawnPointZ
-        );
-    }
+        if((int)type == -1){
+            return;
+        }
 
-    private void SpawnWallObstacle(int spawnPointIndex)
-    {
-        GameObject obstacle = objectPool.GetObject(wallObstaclePrefab);
+        GameObject obstacle = objectPool.GetObject(obstaclePrefabs[(int)type]);
         BoxCollider obstacleCollider = obstacle.GetComponent<BoxCollider>();
+
+        float yOffsetMultiplier = 1.0f;
+
+        switch (type)
+        {
+            case ObstacleType.Low:
+                yOffsetMultiplier = 1.8f;
+                break;
+            case ObstacleType.Wall:
+                yOffsetMultiplier = 4.0f;
+                break;
+        }
+
         obstacle.transform.position = new Vector3(
             spawnPointsX[spawnPointIndex],
-            obstacleCollider.size.y * 0.5f * 4,
+            obstacleCollider.size.y * 0.5f * yOffsetMultiplier,
             spawnPointZ
         );
     }

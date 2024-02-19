@@ -183,8 +183,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 972fb332ba2f2da41a8d8f21fd1d17d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lowObstaclePrefab: {fileID: 6716801049817664176, guid: 77bc18fa6b5913c46ac5ea9dd92d1ae5, type: 3}
-  wallObstaclePrefab: {fileID: 5415314763009485060, guid: ed7563bca72e00e4db135f33c89f912c, type: 3}
+  obstaclePrefabs:
+  - {fileID: 6716801049817664176, guid: 77bc18fa6b5913c46ac5ea9dd92d1ae5, type: 3}
+  - {fileID: 5415314763009485060, guid: ed7563bca72e00e4db135f33c89f912c, type: 3}
   lanes: {fileID: 150021517}
 --- !u!114 &150021519
 MonoBehaviour:
@@ -198,7 +199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0a317079fd54c74394f3d62f9a091fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolLength: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
