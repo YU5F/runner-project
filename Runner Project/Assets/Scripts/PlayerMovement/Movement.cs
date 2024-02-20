@@ -29,6 +29,10 @@ public class Movement : MonoBehaviour
     [Range(0f, 5f)]
     private float rollDuration = 2f;
 
+    [SerializeField]
+    [Range(1f, 100f)]
+    private float landSpeed = 50f;
+
     //Checks
     [SerializeField]
     private GroundSplit laneManager;
@@ -105,7 +109,7 @@ public class Movement : MonoBehaviour
             float newY = Mathf.MoveTowards(
                 transform.position.y,
                 targetHeight,
-                Time.deltaTime * 50f
+                Time.deltaTime * landSpeed
             );
             transform.position = new Vector3(transform.position.x, newY, transform.position.z);
             yield return null;
@@ -137,7 +141,8 @@ public class Movement : MonoBehaviour
 
     bool IsGrounded()
     {
-        float rayLength = playerCollider.bounds.extents.y + 0.1f;
+        float offset = 0.1f;
+        float rayLength = playerCollider.bounds.extents.y + offset;
         return Physics.Raycast(transform.position, Vector3.down, rayLength);
     }
 
