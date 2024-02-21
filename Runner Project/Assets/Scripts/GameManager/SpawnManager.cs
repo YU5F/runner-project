@@ -5,10 +5,10 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField]
-    private List<GameObject> obstaclePrefabs;
+    private List<GameObject> currentPatternObjects;
 
     [SerializeField]
-    private List<GameObject> additionalPrefab;
+    private List<GameObject> nextPatternObjects;
     private int checkCount = 1;
     private float[] spawnPointsX;
     private float spawnPointZ = 20f;
@@ -38,16 +38,17 @@ public class SpawnManager : MonoBehaviour
         }
 
         StartCoroutine(SpawnObstacles());
+        StartCoroutine(ChangePattern());
     }
 
     void Update()
     {
-        if (activeObjects >= 30)
-        {
-            spawnPointZ += 10;
-            ChangePattern();
-            activeObjects = 0;
-        }
+        //     if (activeObjects >= 30)
+        //     {
+        //         spawnPointZ += 10;
+        //         ChangePattern(MapGeneration.GeneratePattern());
+        //         activeObjects = 0;
+        //     }
     }
 
     private IEnumerator SpawnObstacles()
@@ -65,8 +66,9 @@ public class SpawnManager : MonoBehaviour
                     ObstacleType obstacleType = (ObstacleType)obstacleTypeIndex;
 
                     SpawnObstacle(obstacleType, i);
+                    activeObjects++;
 
-                    yield return new WaitForSeconds(0.9f);
+                    yield return new WaitForSeconds(0f);
 
                     if (checkCount < spawnPointsX.Length)
                     {
@@ -77,7 +79,6 @@ public class SpawnManager : MonoBehaviour
                         checkCount = 1;
                         spawnPointZ += 10;
                     }
-                    Debug.Log(checkCount);
                 }
             }
             else
@@ -87,38 +88,37 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    void ChangePattern()
+    IEnumerator ChangePattern()
     {
-        List<GameObject> temp = new List<GameObject>();
-        foreach (GameObject value in obstaclePrefabs)
+        while (true)
         {
-            temp.Add(value);
-        }
+            yield return new WaitForSeconds(5f);
 
-        obstaclePrefabs.Clear();
-        foreach (GameObject value in additionalPrefab)
-        {
-            obstaclePrefabs.Add(value);
-        }
+            List<GameObject> patternObjects = MapGeneration.GeneratePattern();
 
-        additionalPrefab.Clear();
-        foreach (GameObject value in temp)
-        {
-            additionalPrefab.Add(value);
-        }
+            nextPatternObjects.Clear();
+            foreach (GameObject value in patternObjects)
+            {
+                nextPatternObjects.Add(value);
+            }
 
-        temp.Clear();
+            currentPatternObjects.Clear();
+            foreach (GameObject value in nextPatternObjects)
+            {
+                currentPatternObjects.Add(value);
+            }
+        }
     }
 
     private int[] GenerateRandomPattern()
     {
         int[] pattern = new int[spawnPointsX.Length];
 
-        pattern[0] = Random.Range(-1, obstaclePrefabs.Count);
+        pattern[0] = Random.Range(-1, currentPatternObjects.Count);
 
         for (int i = 1; i < pattern.Length; i++)
         {
-            int obstacleType = Random.Range(-1, obstaclePrefabs.Count);
+            int obstacleType = Random.Range(-1, currentPatternObjects.Count);
 
             if (pattern[i - 1] == 1 && obstacleType == (int)ObstacleType.Wall)
             {
@@ -136,10 +136,14 @@ public class SpawnManager : MonoBehaviour
             return;
         }
 
-        GameObject obstacle = objectPool.GetObject(obstaclePrefabs[(int)type]);
+        GameObject obstacle = objectPool.GetObject(currentPatternObjects[(int)type]);
+        obstacle.SetActive(true);
         float ySize = obstacle.GetComponent<Renderer>().bounds.size.y;
 
-        obstacle.transform.position = new Vector3(spawnPointsX[spawnPointIndex], 0 + ySize / 2, spawnPointZ);
-        activeObjects++;
+        obstacle.transform.position = new Vector3(
+            spawnPointsX[spawnPointIndex],
+            0 + ySize / 2,
+            spawnPointZ
+        );
     }
 }

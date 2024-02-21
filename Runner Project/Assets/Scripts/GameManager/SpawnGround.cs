@@ -6,7 +6,6 @@ public class GroundManager : MonoBehaviour
 {
     [SerializeField] private GameObject groundPrefab;
     [SerializeField][Range(5, 20)] private int maxGroundAmount = 5;
-    [SerializeField] private Transform playerTransform;
     private float groundSizeZ;
     private float groundZPosition = 20f;
     private int activeGroundAmount;
