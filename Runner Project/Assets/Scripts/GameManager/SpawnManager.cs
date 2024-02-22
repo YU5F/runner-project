@@ -9,6 +9,10 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField]
     private List<GameObject> nextPatternObjects;
+
+    private float patternChangeInterval = 5f; // Interval between pattern changes
+    private float patternChangeTimer = 0f; // Timer for pattern changes
+
     private int checkCount = 1;
     private float[] spawnPointsX;
     private float spawnPointZ = 20f;
@@ -36,63 +40,46 @@ public class SpawnManager : MonoBehaviour
         {
             spawnPointsX[i] = lanes.GetLanePosition(i);
         }
-
-        StartCoroutine(SpawnObstacles());
-        StartCoroutine(ChangePattern());
     }
 
     void Update()
     {
-        //     if (activeObjects >= 30)
-        //     {
-        //         spawnPointZ += 10;
-        //         ChangePattern(MapGeneration.GeneratePattern());
-        //         activeObjects = 0;
-        //     }
+        SpawnObstacles();
+        UpdatePattern();
     }
 
-    private IEnumerator SpawnObstacles()
+    private void SpawnObstacles()
     {
-        while (true)
+        if (objectPool.poolLength < maxObject)
         {
-            if (objectPool.poolLength < maxObject)
-            {
-                int[] pattern = GenerateRandomPattern();
+            int[] pattern = GenerateRandomPattern();
 
-                for (int i = 0; i < spawnPointsX.Length; i++)
+            for (int i = 0; i < spawnPointsX.Length; i++)
+            {
+                int obstacleTypeIndex = pattern[i];
+                ObstacleType obstacleType = (ObstacleType)obstacleTypeIndex;
+                SpawnObstacle(obstacleType, i);
+                activeObjects++;
+                if (checkCount < spawnPointsX.Length)
                 {
-                    int obstacleTypeIndex = pattern[i];
-
-                    ObstacleType obstacleType = (ObstacleType)obstacleTypeIndex;
-
-                    SpawnObstacle(obstacleType, i);
-                    activeObjects++;
-
-                    yield return new WaitForSeconds(0f);
-
-                    if (checkCount < spawnPointsX.Length)
-                    {
-                        checkCount++;
-                    }
-                    else
-                    {
-                        checkCount = 1;
-                        spawnPointZ += 10;
-                    }
+                    checkCount++;
                 }
-            }
-            else
-            {
-                yield return new WaitForSeconds(0f);
+                else
+                {
+                    checkCount = 1;
+                    spawnPointZ += 10;
+                }
             }
         }
     }
 
-    IEnumerator ChangePattern()
+    private void UpdatePattern()
     {
-        while (true)
+        patternChangeTimer += Time.deltaTime;
+
+        if (patternChangeTimer >= patternChangeInterval)
         {
-            yield return new WaitForSeconds(5f);
+            patternChangeTimer = 0f;
 
             List<GameObject> patternObjects = MapGeneration.GeneratePattern();
 
@@ -145,5 +132,6 @@ public class SpawnManager : MonoBehaviour
             0 + ySize / 2,
             spawnPointZ
         );
+        activeObjects++;
     }
 }

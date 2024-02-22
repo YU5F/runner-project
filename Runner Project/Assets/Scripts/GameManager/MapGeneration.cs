@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class MapGeneration : MonoBehaviour
 {
-    private static Dictionary<string, GameObject> patternObjects = new Dictionary<string, GameObject>();
+    private static Dictionary<string, GameObject> patternObjects =
+        new Dictionary<string, GameObject>();
 
     public enum PatternTypes
     {
@@ -12,6 +13,8 @@ public class MapGeneration : MonoBehaviour
         RampPattern = 2,
         IncomingObstaclesPattern = 3
     }
+
+    private static int prevPattern = -1;
 
     void Awake()
     {
@@ -29,6 +32,12 @@ public class MapGeneration : MonoBehaviour
         List<GameObject> pattern = new List<GameObject>();
 
         int patternIndex = Random.Range(0, System.Enum.GetValues(typeof(PatternTypes)).Length);
+
+        while (patternIndex == prevPattern)
+        {
+            patternIndex = Random.Range(0, System.Enum.GetValues(typeof(PatternTypes)).Length);
+        }
+        
         switch (patternIndex)
         {
             case (int)PatternTypes.ObstaclePattern:
@@ -45,6 +54,8 @@ public class MapGeneration : MonoBehaviour
                 pattern.Add(patternObjects["MovingObstacle"]);
                 break;
         }
+
+        prevPattern = patternIndex;
 
         return pattern;
     }
