@@ -11,13 +11,12 @@ public class ScoreManager : MonoBehaviour
 
     [SerializeField]
     [Range(0, 100)]
-    private float increaseScoreInterval = 1;
+    private float increaseMultiplierInterval = 1;
     private float patternChangeTimer = 0;
 
     void FixedUpdate()
     {
-        currentScore = currentScore + increaseAmount * scoreMultiplier;
-        Debug.Log(currentScore);
+        currentScore += increaseAmount * scoreMultiplier;
     }
 
     void Update()
@@ -27,11 +26,11 @@ public class ScoreManager : MonoBehaviour
         if (patternChangeTimer >= 0.1 && scoreMultiplier < 5)
         {
             patternChangeTimer = 0;
-            increaseScoreInterval += 3f / scoreMultiplier;
+            increaseMultiplierInterval += 3f / scoreMultiplier;
 
-            if (increaseScoreInterval >= 100)
+            if (increaseMultiplierInterval >= 100)
             {
-                increaseScoreInterval = 1;
+                increaseMultiplierInterval = 1;
                 scoreMultiplier++;
             }
         }

@@ -125,7 +125,7 @@ public class SpawnManager : MonoBehaviour
 
         GameObject obstacle = objectPool.GetObject(currentPatternObjects[(int)type]);
         obstacle.SetActive(true);
-        float ySize = obstacle.GetComponent<Renderer>().bounds.size.y;
+        float ySize = obstacle.GetComponent<BoxCollider>().bounds.size.y;
 
         obstacle.transform.position = new Vector3(
             spawnPointsX[spawnPointIndex],

@@ -52,6 +52,8 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
+        playerRb.velocity = transform.forward * moveSpeed;
+
         direction = input.RetrieveHorizontalInput();
         isJumping = input.RetrieveJumpInput();
         rollInput = input.RetrieveRollInput();
@@ -74,12 +76,6 @@ public class Movement : MonoBehaviour
                 StartCoroutine(Land());
             }
         }
-    }
-
-    void FixedUpdate()
-    {
-        Vector3 forwardMove = transform.forward * moveSpeed * Time.fixedDeltaTime;
-        playerRb.MovePosition(playerRb.position + forwardMove);
     }
 
     void Jump()
