@@ -15,6 +15,8 @@ public class MapGeneration : MonoBehaviour
     }
 
     private static int prevPattern = -1;
+    public static int maxPatternObject;
+    public static int patternIndex;
 
     void Awake()
     {
@@ -31,7 +33,7 @@ public class MapGeneration : MonoBehaviour
     {
         List<GameObject> pattern = new List<GameObject>();
 
-        int patternIndex = Random.Range(0, System.Enum.GetValues(typeof(PatternTypes)).Length);
+        patternIndex = Random.Range(0, System.Enum.GetValues(typeof(PatternTypes)).Length);
 
         while (patternIndex == prevPattern)
         {
@@ -43,15 +45,19 @@ public class MapGeneration : MonoBehaviour
             case (int)PatternTypes.ObstaclePattern:
                 pattern.Add(patternObjects["LowObstacle"]);
                 pattern.Add(patternObjects["WallObstacle"]);
+                maxPatternObject = 30;
                 break;
             case (int)PatternTypes.CoinPattern:
                 pattern.Add(patternObjects["Coin"]);
+                maxPatternObject = 20;
                 break;
             case (int)PatternTypes.RampPattern:
                 pattern.Add(patternObjects["Ramp"]);
+                maxPatternObject = 10;
                 break;
             case (int)PatternTypes.IncomingObstaclesPattern:
                 pattern.Add(patternObjects["MovingObstacle"]);
+                maxPatternObject = 5;
                 break;
         }
 

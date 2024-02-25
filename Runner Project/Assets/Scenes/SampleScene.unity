@@ -186,8 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 972fb332ba2f2da41a8d8f21fd1d17d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPatternObjects:
-  - {fileID: 6847947248582459351, guid: 61655097109ce5941ba3a4b160c358e8, type: 3}
+  currentPatternObjects: []
   nextPatternObjects: []
   lanes: {fileID: 150021517}
   maxObject: 30
@@ -957,13 +956,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6568718858767459874, guid: 1a57402a85e6b85488baefcdac14031b, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 987190860}
     - target: {fileID: 8809259019278296124, guid: 1a57402a85e6b85488baefcdac14031b, type: 3}
       propertyPath: m_Name
       value: MovingObstacle
-      objectReference: {fileID: 0}
-    - target: {fileID: 8809259019278296124, guid: 1a57402a85e6b85488baefcdac14031b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

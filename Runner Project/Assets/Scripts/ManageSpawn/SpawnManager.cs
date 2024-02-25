@@ -9,10 +9,6 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField]
     private List<GameObject> nextPatternObjects;
-
-    private float patternChangeInterval = 3f; // Interval between pattern changes
-    private float patternChangeTimer = 0f; // Timer for pattern changes
-
     private int checkCount = 1;
     private float[] spawnPointsX;
     private float spawnPointZ = 20f;
@@ -67,9 +63,8 @@ public class SpawnManager : MonoBehaviour
 
     private void UpdatePattern()
     {
-        if (activeObjects >= 10)
+        if (activeObjects >= MapGeneration.maxPatternObject)
         {
-            activeObjects = 0;
             List<GameObject> patternObjects = MapGeneration.GeneratePattern();
 
             nextPatternObjects.Clear();
@@ -83,6 +78,7 @@ public class SpawnManager : MonoBehaviour
             {
                 currentPatternObjects.Add(value);
             }
+            activeObjects = 0;
         }
     }
 
@@ -116,11 +112,16 @@ public class SpawnManager : MonoBehaviour
         obstacle.SetActive(true);
         float ySize = obstacle.GetComponent<BoxCollider>().bounds.size.y;
 
+        if(obstacle.gameObject.name == "MovingObstacle"){
+            spawnPointZ += 20;
+        }
+
         obstacle.transform.position = new Vector3(
             spawnPointsX[spawnPointIndex],
             0 + ySize / 2,
             spawnPointZ
         );
+        
         activeObjects++;
     }
 }

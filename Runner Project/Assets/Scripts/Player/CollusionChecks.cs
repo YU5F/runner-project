@@ -14,7 +14,7 @@ public class CollusionChecks : MonoBehaviour
     void OnTriggerEnter(Collider other){
         if(other.gameObject.CompareTag("Coin")){
             other.gameObject.SetActive(false);
-            Debug.Log("coyin");
+            ScoreManager.coinAmount++;
         }
     }
 }

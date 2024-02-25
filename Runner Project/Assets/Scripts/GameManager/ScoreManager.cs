@@ -3,6 +3,7 @@ using UnityEngine;
 public class ScoreManager : MonoBehaviour
 {
     private int currentScore = 0;
+    public static int coinAmount = 0;
     private int increaseAmount = 11;
 
     [SerializeField]
@@ -26,7 +27,7 @@ public class ScoreManager : MonoBehaviour
         if (patternChangeTimer >= 0.1 && scoreMultiplier < 5)
         {
             patternChangeTimer = 0;
-            increaseMultiplierInterval += 3f / scoreMultiplier;
+            increaseMultiplierInterval += 1f / scoreMultiplier;
 
             if (increaseMultiplierInterval >= 100)
             {
