@@ -86,6 +86,13 @@ public class SpawnManager : MonoBehaviour
     {
         int[] pattern = new int[spawnPointsX.Length];
 
+        if(MapGeneration.patternIndex == 2){
+            for(int i = 0; i < pattern.Length; i++){
+                pattern[i] = 0;
+            }
+            return pattern;
+        }
+
         pattern[0] = Random.Range(-1, currentPatternObjects.Count);
 
         for (int i = 1; i < pattern.Length; i++)
@@ -110,7 +117,7 @@ public class SpawnManager : MonoBehaviour
 
         GameObject obstacle = objectPool.GetObject(currentPatternObjects[(int)type]);
         obstacle.SetActive(true);
-        float ySize = obstacle.GetComponent<BoxCollider>().bounds.size.y;
+        float ySize = obstacle.GetComponent<MeshRenderer>().bounds.size.y;
 
         if(obstacle.gameObject.name == "MovingObstacle"){
             spawnPointZ += 20;
@@ -121,7 +128,7 @@ public class SpawnManager : MonoBehaviour
             0 + ySize / 2,
             spawnPointZ
         );
-        
+
         activeObjects++;
     }
 }

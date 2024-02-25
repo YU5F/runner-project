@@ -9,7 +9,7 @@ public class GroundSplit : MonoBehaviour
     private float[] lanePositions;
     private readonly float scaleMultiplier = 8f;
 
-    void Start()
+    void Awake()
     {
         //Split ground object into 3 diffrent sections and assign section positions to an array
         float laneWidth = groundObject.localScale.x / laneAmount;

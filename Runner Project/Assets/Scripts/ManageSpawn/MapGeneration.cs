@@ -45,15 +45,15 @@ public class MapGeneration : MonoBehaviour
             case (int)PatternTypes.ObstaclePattern:
                 pattern.Add(patternObjects["LowObstacle"]);
                 pattern.Add(patternObjects["WallObstacle"]);
-                maxPatternObject = 30;
+                maxPatternObject = 15;
                 break;
             case (int)PatternTypes.CoinPattern:
                 pattern.Add(patternObjects["Coin"]);
-                maxPatternObject = 20;
+                maxPatternObject = 10;
                 break;
             case (int)PatternTypes.RampPattern:
                 pattern.Add(patternObjects["Ramp"]);
-                maxPatternObject = 10;
+                maxPatternObject = 3;
                 break;
             case (int)PatternTypes.IncomingObstaclesPattern:
                 pattern.Add(patternObjects["MovingObstacle"]);
