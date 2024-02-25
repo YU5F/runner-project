@@ -10,7 +10,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> nextPatternObjects;
 
-    private float patternChangeInterval = 5f; // Interval between pattern changes
+    private float patternChangeInterval = 3f; // Interval between pattern changes
     private float patternChangeTimer = 0f; // Timer for pattern changes
 
     private int checkCount = 1;
@@ -23,12 +23,6 @@ public class SpawnManager : MonoBehaviour
     [Range(10f, 100f)]
     private int maxObject = 30;
     private int activeObjects = 0;
-
-    public enum ObstacleType
-    {
-        Low,
-        Wall
-    }
 
     void Start()
     {
@@ -57,9 +51,7 @@ public class SpawnManager : MonoBehaviour
             for (int i = 0; i < spawnPointsX.Length; i++)
             {
                 int obstacleTypeIndex = pattern[i];
-                ObstacleType obstacleType = (ObstacleType)obstacleTypeIndex;
-                SpawnObstacle(obstacleType, i);
-                activeObjects++;
+                SpawnObstacle(obstacleTypeIndex, i);
                 if (checkCount < spawnPointsX.Length)
                 {
                     checkCount++;
@@ -75,12 +67,9 @@ public class SpawnManager : MonoBehaviour
 
     private void UpdatePattern()
     {
-        patternChangeTimer += Time.deltaTime;
-
-        if (patternChangeTimer >= patternChangeInterval)
+        if (activeObjects >= 10)
         {
-            patternChangeTimer = 0f;
-
+            activeObjects = 0;
             List<GameObject> patternObjects = MapGeneration.GeneratePattern();
 
             nextPatternObjects.Clear();
@@ -107,7 +96,7 @@ public class SpawnManager : MonoBehaviour
         {
             int obstacleType = Random.Range(-1, currentPatternObjects.Count);
 
-            if (pattern[i - 1] == 1 && obstacleType == (int)ObstacleType.Wall)
+            if (pattern[i - 1] == 1 && obstacleType == 1)
             {
                 obstacleType = Random.Range(-1, 1);
             }
@@ -116,9 +105,9 @@ public class SpawnManager : MonoBehaviour
         return pattern;
     }
 
-    private void SpawnObstacle(ObstacleType type, int spawnPointIndex)
+    private void SpawnObstacle(int type, int spawnPointIndex)
     {
-        if ((int)type == -1)
+        if (type == -1)
         {
             return;
         }

@@ -33,7 +33,7 @@ public class GroundManager : MonoBehaviour
 
     void CreateGround(){
         GameObject ground = Instantiate(groundPrefab);
-        ground.transform.position = new Vector3(0, 0, groundZPosition);
+        ground.transform.position = new Vector3(0, 0, groundZPosition - 0.3f);
         groundZPosition += groundSizeZ;
     }
 }

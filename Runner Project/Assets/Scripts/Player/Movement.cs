@@ -52,7 +52,7 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        playerRb.velocity = transform.forward * moveSpeed;
+        playerRb.velocity = new Vector3(0, playerRb.velocity.y, moveSpeed);
 
         direction = input.RetrieveHorizontalInput();
         isJumping = input.RetrieveJumpInput();
