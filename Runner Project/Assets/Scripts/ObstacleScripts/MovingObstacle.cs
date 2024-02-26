@@ -4,7 +4,7 @@ public class MovingObstacle : MonoBehaviour
 {
     [SerializeField] private Transform playerTransform;
     private float distance;
-    private float minDistance = 40f;
+    private float minDistance = 20f;
     [SerializeField][Range(0f, 50f)]private float moveSpeed = 10f;
 
     void Update(){

@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField]
-    private List<GameObject> currentPatternObjects;
-
-    [SerializeField]
-    private List<GameObject> nextPatternObjects;
+    public List<GameObject> currentPatternObjects;
+    public List<GameObject> nextPatternObjects;
     private int checkCount = 1;
     private float[] spawnPointsX;
     private float spawnPointZ = 20f;
@@ -19,6 +16,7 @@ public class SpawnManager : MonoBehaviour
     [Range(10f, 100f)]
     private int maxObject = 30;
     private int activeObjects = 0;
+    private static float spaceAmount = 10f;
 
     void Start()
     {
@@ -35,7 +33,11 @@ public class SpawnManager : MonoBehaviour
     void Update()
     {
         SpawnObstacles();
-        UpdatePattern();
+
+        if (activeObjects >= MapGeneration.maxPatternObject)
+        {
+            UpdatePattern();
+        }
     }
 
     private void SpawnObstacles()
@@ -47,47 +49,50 @@ public class SpawnManager : MonoBehaviour
             for (int i = 0; i < spawnPointsX.Length; i++)
             {
                 int obstacleTypeIndex = pattern[i];
+
                 SpawnObstacle(obstacleTypeIndex, i);
 
-                if (checkCount < spawnPointsX.Length)
-                {
-                    checkCount++;
-                }
-                else
-                {
-                    checkCount = 1;
-                    spawnPointZ += 10;
-                }
+                PutGapBetweenPatterns(spaceAmount);
             }
+        }
+    }
+
+    private void PutGapBetweenPatterns(float addZAxis)
+    {
+        if (checkCount < spawnPointsX.Length)
+        {
+            checkCount++;
+        }
+        else
+        {
+            checkCount = 1;
+            spawnPointZ += addZAxis;
         }
     }
 
     private void UpdatePattern()
     {
-        if (activeObjects >= MapGeneration.maxPatternObject)
+        List<GameObject> patternObjects = MapGeneration.GeneratePattern();
+
+        nextPatternObjects.Clear();
+        foreach (GameObject value in patternObjects)
         {
-            List<GameObject> patternObjects = MapGeneration.GeneratePattern();
-
-            nextPatternObjects.Clear();
-            foreach (GameObject value in patternObjects)
-            {
-                nextPatternObjects.Add(value);
-            }
-
-            currentPatternObjects.Clear();
-            foreach (GameObject value in nextPatternObjects)
-            {
-                currentPatternObjects.Add(value);
-            }
-            activeObjects = 0;
+            nextPatternObjects.Add(value);
         }
+
+        currentPatternObjects.Clear();
+        foreach (GameObject value in nextPatternObjects)
+        {
+            currentPatternObjects.Add(value);
+        }
+        activeObjects = 0;
     }
 
     private int[] GenerateRandomPattern()
     {
         int[] pattern = new int[spawnPointsX.Length];
 
-        if (MapGeneration.patternIndex == 1)
+        if (MapGeneration.patternIndex == 1 && MapGeneration.patternIndex == 3)
         {
             for (int i = 1; i < pattern.Length; i++)
             {
@@ -131,18 +136,25 @@ public class SpawnManager : MonoBehaviour
             return;
         }
 
-        GameObject obstacle = objectPool.GetObject(currentPatternObjects[(int)type]);
+        GameObject obstacle = objectPool.GetObject(currentPatternObjects[type]);
         obstacle.SetActive(true);
         float ySize = obstacle.GetComponent<MeshRenderer>().bounds.size.y;
 
-        if (obstacle.gameObject.name == "MovingObstacle")
+        if (obstacle.CompareTag("Obstacle"))
         {
-            spawnPointZ += 8;
+            spaceAmount = 10f;
         }
 
-        if (obstacle.gameObject.CompareTag("Coin"))
+        if (obstacle.name == "MovingObstacle")
         {
-            spawnPointZ += 5;
+            spawnPointZ += 10f;
+        }
+
+        if (obstacle.CompareTag("Coin"))
+        {
+            obstacle.transform.position += new Vector3(0f, .5f, 0f);
+            spawnPointZ += 2f;
+            spaceAmount = 2f;
         }
 
         obstacle.transform.position = new Vector3(
@@ -152,5 +164,10 @@ public class SpawnManager : MonoBehaviour
         );
 
         activeObjects++;
+
+        if (activeObjects >= MapGeneration.maxPatternObject)
+        {
+            spaceAmount = 10f;
+        }
     }
 }

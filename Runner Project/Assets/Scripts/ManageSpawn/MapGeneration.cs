@@ -6,6 +6,11 @@ public class MapGeneration : MonoBehaviour
     private static Dictionary<string, GameObject> patternObjects =
         new Dictionary<string, GameObject>();
 
+    private static int prevPattern = -1;
+    private static int nonObstacleCheck = 0;
+    public static int maxPatternObject;
+    public static int patternIndex;
+
     public enum PatternTypes
     {
         ObstaclePattern = 0,
@@ -13,11 +18,6 @@ public class MapGeneration : MonoBehaviour
         RampPattern = 2,
         IncomingObstaclesPattern = 3
     }
-
-    private static int prevPattern = -1;
-    private static int nonObstacleCheck = 0;
-    public static int maxPatternObject;
-    public static int patternIndex;
 
     void Awake()
     {
@@ -44,7 +44,7 @@ public class MapGeneration : MonoBehaviour
         if (patternIndex != (int)PatternTypes.ObstaclePattern && nonObstacleCheck >= 2)
         {
             nonObstacleCheck = 0;
-            patternIndex = (int) PatternTypes.ObstaclePattern;
+            patternIndex = (int)PatternTypes.ObstaclePattern;
         }
 
         if (patternIndex != (int)PatternTypes.ObstaclePattern)
@@ -62,7 +62,7 @@ public class MapGeneration : MonoBehaviour
                 break;
             case (int)PatternTypes.CoinPattern:
                 pattern.Add(patternObjects["Coin"]);
-                maxPatternObject = 10;
+                maxPatternObject = 25;
                 break;
             case (int)PatternTypes.RampPattern:
                 pattern.Add(patternObjects["Ramp"]);
@@ -70,7 +70,7 @@ public class MapGeneration : MonoBehaviour
                 break;
             case (int)PatternTypes.IncomingObstaclesPattern:
                 pattern.Add(patternObjects["MovingObstacle"]);
-                maxPatternObject = 5;
+                maxPatternObject = 3;
                 break;
         }
 
