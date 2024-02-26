@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundPrefab: {fileID: 5553419285934606056, guid: d175a0833f7cfd945bdb3713d8c198a9, type: 3}
-  maxGroundAmount: 5
+  maxGroundAmount: 8
 --- !u!114 &150021521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -767,7 +767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   input: {fileID: 11400000, guid: 3089d64e469288742b6682370ecdd2ab, type: 2}
   changeLineSpeed: 40
-  moveSpeed: 15
+  moveSpeed: 12
   jumpForce: 7
   rollDuration: 0.2
   landSpeed: 50

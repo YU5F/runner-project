@@ -15,6 +15,7 @@ public class MapGeneration : MonoBehaviour
     }
 
     private static int prevPattern = -1;
+    private static int nonObstacleCheck = 0;
     public static int maxPatternObject;
     public static int patternIndex;
 
@@ -39,13 +40,25 @@ public class MapGeneration : MonoBehaviour
         {
             patternIndex = Random.Range(0, System.Enum.GetValues(typeof(PatternTypes)).Length);
         }
-        
+
+        if (patternIndex != (int)PatternTypes.ObstaclePattern && nonObstacleCheck >= 2)
+        {
+            nonObstacleCheck = 0;
+            patternIndex = (int) PatternTypes.ObstaclePattern;
+        }
+
+        if (patternIndex != (int)PatternTypes.ObstaclePattern)
+        {
+            nonObstacleCheck++;
+        }
+
         switch (patternIndex)
         {
             case (int)PatternTypes.ObstaclePattern:
                 pattern.Add(patternObjects["LowObstacle"]);
                 pattern.Add(patternObjects["WallObstacle"]);
                 maxPatternObject = 15;
+                nonObstacleCheck = 0;
                 break;
             case (int)PatternTypes.CoinPattern:
                 pattern.Add(patternObjects["Coin"]);

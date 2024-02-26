@@ -48,6 +48,7 @@ public class SpawnManager : MonoBehaviour
             {
                 int obstacleTypeIndex = pattern[i];
                 SpawnObstacle(obstacleTypeIndex, i);
+
                 if (checkCount < spawnPointsX.Length)
                 {
                     checkCount++;
@@ -86,8 +87,23 @@ public class SpawnManager : MonoBehaviour
     {
         int[] pattern = new int[spawnPointsX.Length];
 
-        if(MapGeneration.patternIndex == 2){
-            for(int i = 0; i < pattern.Length; i++){
+        if (MapGeneration.patternIndex == 1)
+        {
+            for (int i = 1; i < pattern.Length; i++)
+            {
+                int obstacleType = Random.Range(-1, currentPatternObjects.Count);
+                if (pattern[i - 1] == -1 && obstacleType == -1)
+                {
+                    obstacleType = 0;
+                }
+                pattern[i] = obstacleType;
+            }
+        }
+
+        if (MapGeneration.patternIndex == 2)
+        {
+            for (int i = 0; i < pattern.Length; i++)
+            {
                 pattern[i] = 0;
             }
             return pattern;
@@ -119,8 +135,14 @@ public class SpawnManager : MonoBehaviour
         obstacle.SetActive(true);
         float ySize = obstacle.GetComponent<MeshRenderer>().bounds.size.y;
 
-        if(obstacle.gameObject.name == "MovingObstacle"){
-            spawnPointZ += 20;
+        if (obstacle.gameObject.name == "MovingObstacle")
+        {
+            spawnPointZ += 8;
+        }
+
+        if (obstacle.gameObject.CompareTag("Coin"))
+        {
+            spawnPointZ += 5;
         }
 
         obstacle.transform.position = new Vector3(
