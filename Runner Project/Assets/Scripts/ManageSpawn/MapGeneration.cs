@@ -66,7 +66,7 @@ public class MapGeneration : MonoBehaviour
                 break;
             case (int)PatternTypes.RampPattern:
                 pattern.Add(patternObjects["Ramp"]);
-                maxPatternObject = 3;
+                maxPatternObject = 1;
                 break;
             case (int)PatternTypes.IncomingObstaclesPattern:
                 pattern.Add(patternObjects["MovingObstacle"]);

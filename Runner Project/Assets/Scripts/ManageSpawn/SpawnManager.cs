@@ -10,6 +10,7 @@ public class SpawnManager : MonoBehaviour
     private float[] spawnPointsX;
     private float spawnPointZ = 20f;
     public GroundSplit lanes;
+    public GameObject rampObject;
     private ObjectPool objectPool;
 
     [SerializeField]
@@ -92,7 +93,7 @@ public class SpawnManager : MonoBehaviour
     {
         int[] pattern = new int[spawnPointsX.Length];
 
-        if (MapGeneration.patternIndex == 1 && MapGeneration.patternIndex == 3)
+        if (MapGeneration.patternIndex == 1 && MapGeneration.patternIndex == 2 && MapGeneration.patternIndex == 3)
         {
             for (int i = 1; i < pattern.Length; i++)
             {
@@ -102,14 +103,6 @@ public class SpawnManager : MonoBehaviour
                     obstacleType = 0;
                 }
                 pattern[i] = obstacleType;
-            }
-        }
-
-        if (MapGeneration.patternIndex == 2)
-        {
-            for (int i = 0; i < pattern.Length; i++)
-            {
-                pattern[i] = 0;
             }
             return pattern;
         }
@@ -140,9 +133,15 @@ public class SpawnManager : MonoBehaviour
         obstacle.SetActive(true);
         float ySize = obstacle.GetComponent<MeshRenderer>().bounds.size.y;
 
+        if(obstacle.CompareTag("Ramp")){
+            GameObject ramp = objectPool.GetObject(rampObject);
+            ramp.SetActive(true);
+            ramp.transform.position = new Vector3(0, 2.5f, spawnPointZ + 25);
+        }
+
         if (obstacle.CompareTag("Obstacle"))
         {
-            spaceAmount = 10f;
+            spaceAmount = 15f;
         }
 
         if (obstacle.name == "MovingObstacle")
