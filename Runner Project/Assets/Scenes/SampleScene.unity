@@ -768,7 +768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   input: {fileID: 11400000, guid: 3089d64e469288742b6682370ecdd2ab, type: 2}
   changeLineSpeed: 40
-  moveSpeed: 12
+  moveSpeed: 150
   jumpForce: 7
   rollDuration: 0.2
   landSpeed: 50
