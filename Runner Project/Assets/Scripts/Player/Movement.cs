@@ -8,6 +8,9 @@ public class Movement : MonoBehaviour
     //Inputs
     [SerializeField]
     private InputController input = null;
+
+    [SerializeField]
+    private Animator playerAnimator;
     private float direction;
     private bool isJumping;
     private bool rollInput = false;
@@ -49,7 +52,7 @@ public class Movement : MonoBehaviour
     private Rigidbody playerRb;
 
     [SerializeField]
-    private Collider playerCollider;
+    private CapsuleCollider playerCollider;
 
     private int currentLane = 1;
     private float targetPositionX;
@@ -78,6 +81,17 @@ public class Movement : MonoBehaviour
         if (isJumping)
         {
             Jump();
+        }
+
+        if (IsGrounded())
+        {
+            playerAnimator.SetBool("IsGrounded", true);
+            playerAnimator.SetBool("IsJumping", false);
+        }
+        else
+        {
+            playerAnimator.SetBool("IsGrounded", false);
+            playerAnimator.SetBool("IsJumping", true);
         }
 
         if (rollInput)
@@ -152,6 +166,7 @@ public class Movement : MonoBehaviour
         if (!isRolling)
         {
             isRolling = true;
+            playerAnimator.SetBool("IsRolling", true);
             StartCoroutine(StartRoll());
         }
     }
@@ -177,13 +192,14 @@ public class Movement : MonoBehaviour
 
     IEnumerator StartRoll()
     {
-        Vector3 playerScale = transform.localScale;
-        transform.localScale = new Vector3(playerScale.x, playerScale.y / 2f, playerScale.z);
+        playerCollider.height /= 2;
 
         yield return new WaitForSeconds(rollDuration);
 
-        transform.localScale = playerScale;
+        playerCollider.height *= 2;
+
         isRolling = false;
+        playerAnimator.SetBool("IsRolling", false);
     }
 
     float GetGroundHeight()
@@ -231,6 +247,7 @@ public class Movement : MonoBehaviour
     void ChangeTargetPosition(int laneIndex)
     {
         CheckIfNearMiss();
+        playerAnimator.SetTrigger("IsChangingLane");
         isMoving = true;
         currentLane = laneIndex;
         targetPositionX = laneManager.GetLanePosition(laneIndex);
