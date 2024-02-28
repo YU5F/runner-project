@@ -6,13 +6,15 @@ public class CollusionChecks : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Obstacle"))
         {
-            //Lose health
-            Debug.Log("cart");
+            PlayerHealth.DecreaseHealth();
+            collision.gameObject.SetActive(false);
         }
     }
 
-    void OnTriggerEnter(Collider other){
-        if(other.gameObject.CompareTag("Coin")){
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Coin"))
+        {
             other.gameObject.SetActive(false);
             ScoreManager.coinAmount++;
         }

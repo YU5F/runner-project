@@ -53,6 +53,8 @@ public class Movement : MonoBehaviour
 
     private int currentLane = 1;
     private float targetPositionX;
+    private float increaseSpeedTimer = 0;
+    private float increaseSpeedInterval = 5f;
 
     #endregion
 
@@ -64,6 +66,8 @@ public class Movement : MonoBehaviour
     void Update()
     {
         playerRb.velocity = new Vector3(0, playerRb.velocity.y, moveSpeed);
+
+        IncreaseSpeed();
 
         direction = input.RetrieveHorizontalInput();
         isJumping = input.RetrieveJumpInput();
@@ -89,6 +93,16 @@ public class Movement : MonoBehaviour
         }
     }
 
+    void IncreaseSpeed()
+    {
+        increaseSpeedTimer += Time.deltaTime;
+        if (increaseSpeedTimer >= increaseSpeedInterval)
+        {
+            increaseSpeedTimer = 0;
+            moveSpeed += 0.1f;
+        }
+    }
+
     void Jump()
     {
         if (IsGrounded())
@@ -101,7 +115,8 @@ public class Movement : MonoBehaviour
     {
         RaycastHit hit;
         Vector3 rayDirection = transform.forward;
-        Vector3 rayOrigin = transform.position + (Vector3.down * playerCollider.bounds.extents.y / 2);
+        Vector3 rayOrigin =
+            transform.position + (Vector3.down * playerCollider.bounds.extents.y / 2);
 
         if (Physics.Raycast(rayOrigin, rayDirection, out hit, nearMissRayLength))
         {
