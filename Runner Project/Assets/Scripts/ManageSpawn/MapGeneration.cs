@@ -28,6 +28,7 @@ public class MapGeneration : MonoBehaviour
         patternObjects.Add("Coin", objects.transform.Find("Coin").gameObject);
         patternObjects.Add("Ramp", objects.transform.Find("Ramp").gameObject);
         patternObjects.Add("MovingObstacle", objects.transform.Find("MovingObstacle").gameObject);
+        patternObjects.Add("HoleObstacle", objects.transform.Find("HoleObstacle").gameObject);
     }
 
     public static List<GameObject> GeneratePattern()
@@ -57,6 +58,7 @@ public class MapGeneration : MonoBehaviour
             case (int)PatternTypes.ObstaclePattern:
                 pattern.Add(patternObjects["LowObstacle"]);
                 pattern.Add(patternObjects["WallObstacle"]);
+                pattern.Add(patternObjects["HoleObstacle"]);
                 maxPatternObject = 15;
                 nonObstacleCheck = 0;
                 break;

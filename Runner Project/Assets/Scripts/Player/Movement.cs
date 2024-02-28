@@ -128,6 +128,7 @@ public class Movement : MonoBehaviour
 
     private void NearMiss()
     {
+        ScoreManager.Instance.IncreaseMultiplierInterval(20f);
         Debug.Log("near miss");
     }
 

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
@@ -12,8 +13,23 @@ public class ScoreManager : MonoBehaviour
 
     [SerializeField]
     [Range(0, 100)]
-    private float increaseMultiplierInterval = 1;
+    public float increaseMultiplierInterval = 1;
     private float patternChangeTimer = 0;
+    private int maxMultiplier = 5;
+
+    public static ScoreManager Instance { get; private set; }
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     void FixedUpdate()
     {
@@ -24,7 +40,7 @@ public class ScoreManager : MonoBehaviour
     {
         patternChangeTimer += Time.deltaTime;
 
-        if (patternChangeTimer >= 0.1 && scoreMultiplier < 5)
+        if (patternChangeTimer >= 0.1 && scoreMultiplier < maxMultiplier)
         {
             patternChangeTimer = 0;
             increaseMultiplierInterval += 1f / scoreMultiplier;
@@ -34,6 +50,14 @@ public class ScoreManager : MonoBehaviour
                 increaseMultiplierInterval = 1;
                 scoreMultiplier++;
             }
+        }
+    }
+
+    public void IncreaseMultiplierInterval(float amount)
+    {
+        if (scoreMultiplier < maxMultiplier)
+        {
+            increaseMultiplierInterval += amount;
         }
     }
 }

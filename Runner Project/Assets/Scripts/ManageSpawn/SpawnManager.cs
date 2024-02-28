@@ -166,7 +166,7 @@ public class SpawnManager : MonoBehaviour
             spawnPointZ += 10f;
         }
 
-        if (obstacle.CompareTag("Coin"))
+        if (obstacle.tag == "Coin")
         {
             obstacle.transform.position += new Vector3(0f, .5f, 0f);
             spawnPointZ += 2f;
