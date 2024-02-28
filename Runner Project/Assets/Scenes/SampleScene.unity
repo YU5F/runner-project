@@ -768,10 +768,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   input: {fileID: 11400000, guid: 3089d64e469288742b6682370ecdd2ab, type: 2}
   changeLineSpeed: 40
-  moveSpeed: 17
+  moveSpeed: 12
   jumpForce: 7
   rollDuration: 0.2
   landSpeed: 50
+  nearMissDistance: 2
   laneManager: {fileID: 150021517}
   playerRb: {fileID: 987190863}
   playerCollider: {fileID: 987190862}
@@ -1126,10 +1127,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5843308552119987867, guid: 65fa12360a30e714685d47c69b12e18e, type: 3}
-      propertyPath: rotationSpeed
-      value: 100
-      objectReference: {fileID: 0}
     - target: {fileID: 6631982232669027969, guid: 65fa12360a30e714685d47c69b12e18e, type: 3}
       propertyPath: m_Name
       value: Coin
@@ -1162,6 +1159,10 @@ PrefabInstance:
     - target: {fileID: 7269771028964543018, guid: 61655097109ce5941ba3a4b160c358e8, type: 3}
       propertyPath: m_Name
       value: Ramp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7269771028964543018, guid: 61655097109ce5941ba3a4b160c358e8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8383507276108250287, guid: 61655097109ce5941ba3a4b160c358e8, type: 3}
       propertyPath: m_LocalPosition.x

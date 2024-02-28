@@ -33,6 +33,12 @@ public class Movement : MonoBehaviour
     [Range(1f, 100f)]
     private float landSpeed = 50f;
 
+    [SerializeField]
+    [Range(0.1f, 10f)]
+    private float nearMissDistance = 2f;
+    private float nearMissRayLength;
+    private float nearMissMaxRayLength = 10f;
+
     //Checks
     [SerializeField]
     private GroundSplit laneManager;
@@ -49,6 +55,11 @@ public class Movement : MonoBehaviour
     private float targetPositionX;
 
     #endregion
+
+    void Start()
+    {
+        nearMissRayLength = nearMissMaxRayLength;
+    }
 
     void Update()
     {
@@ -84,6 +95,40 @@ public class Movement : MonoBehaviour
         {
             playerRb.velocity = new Vector3(playerRb.velocity.x, jumpForce, playerRb.velocity.z);
         }
+    }
+
+    private bool CheckIfNearMiss()
+    {
+        RaycastHit hit;
+        Vector3 rayDirection = transform.forward;
+        Vector3 rayOrigin = transform.position + (Vector3.down * playerCollider.bounds.extents.y / 2);
+
+        if (Physics.Raycast(rayOrigin, rayDirection, out hit, nearMissRayLength))
+        {
+            float distance = Vector3.Distance(rayOrigin, hit.point);
+            Debug.DrawRay(rayOrigin, rayDirection * distance, Color.green);
+
+            if (hit.collider.CompareTag("Obstacle"))
+            {
+                nearMissRayLength = distance;
+            }
+
+            if (distance < nearMissDistance && hit.collider.CompareTag("Obstacle"))
+            {
+                NearMiss();
+                return true;
+            }
+        }
+        else
+        {
+            nearMissRayLength = nearMissMaxRayLength;
+        }
+        return false;
+    }
+
+    private void NearMiss()
+    {
+        Debug.Log("near miss");
     }
 
     void Roll()
@@ -169,6 +214,7 @@ public class Movement : MonoBehaviour
 
     void ChangeTargetPosition(int laneIndex)
     {
+        CheckIfNearMiss();
         isMoving = true;
         currentLane = laneIndex;
         targetPositionX = laneManager.GetLanePosition(laneIndex);
