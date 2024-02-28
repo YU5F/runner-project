@@ -99,7 +99,7 @@ public class Movement : MonoBehaviour
         if (increaseSpeedTimer >= increaseSpeedInterval)
         {
             increaseSpeedTimer = 0;
-            moveSpeed += 0.1f;
+            moveSpeed += 0.24f;
         }
     }
 
