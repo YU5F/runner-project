@@ -17,6 +17,7 @@ public class ScoreManager : MonoBehaviour
     public float increaseMultiplierInterval = 1;
     private float patternChangeTimer = 0;
     private int maxMultiplier = 5;
+    private int coinValue = 100;
 
     public static ScoreManager Instance { get; private set; }
 
@@ -43,7 +44,7 @@ public class ScoreManager : MonoBehaviour
     void Update()
     {
         if(PlayerHealth.gameOver){
-            GameOverScreen.ActivateGameOverScreen(currentScore);
+            GameOverScreen.ActivateGameOverScreen(currentScore + coinAmount * coinValue);
             return;
         }
 

@@ -12,4 +12,9 @@ public class PlayerHealth : MonoBehaviour
             gameOver = true;
         }
     }
+
+    public static void Restart(){
+        gameOver = false;
+        health = 3;
+    }
 }

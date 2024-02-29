@@ -1,9 +1,9 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CollusionChecks : MonoBehaviour
 {
-    public Material playerMaterial;
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Obstacle"))
@@ -22,10 +22,5 @@ public class CollusionChecks : MonoBehaviour
             other.gameObject.SetActive(false);
             ScoreManager.Instance.coinAmount++;
         }
-    }
-
-    IEnumerator BlinkCharacterMaterial(){
-        
-        yield return new WaitForSeconds(3f);
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Movement : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Movement : MonoBehaviour
 
     [SerializeField]
     private Animator playerAnimator;
+    public PauseScreen pauseScreen;
     private float direction;
     private bool isJumping;
     private bool rollInput = false;
@@ -107,8 +109,13 @@ public class Movement : MonoBehaviour
                     StartCoroutine(Land());
                 }
             }
+
+            if(Input.GetKeyDown(KeyCode.Escape)){
+                pauseScreen.TogglePauseScreen();
+            }
         }
-        else{
+        else
+        {
             playerAnimator.SetBool("GameOver", true);
             playerAnimator.SetBool("IsGrounded", false);
         }
@@ -164,7 +171,13 @@ public class Movement : MonoBehaviour
 
     private void NearMiss()
     {
-        ScoreManager.Instance.IncreaseMultiplierInterval(20f);
+        if (ScoreManager.Instance.scoreMultiplier < 5)
+        {
+            ScoreManager.Instance.IncreaseMultiplierInterval(20f);
+        }
+        else{
+            ScoreManager.Instance.currentScore += 1000;
+        }
         Debug.Log("near miss");
     }
 

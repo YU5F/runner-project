@@ -8,7 +8,7 @@ public class GameOverScreen : MonoBehaviour
 
     public void ActivateGameOverScreen(int score){
         gameObject.SetActive(true);
-        scoreText.text = score.ToString();
+        scoreText.text = score + " x " + ScoreManager.Instance.coinAmount;
     }
 
     public void RestartButton(){
