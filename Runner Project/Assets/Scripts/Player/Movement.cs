@@ -68,42 +68,49 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        playerRb.velocity = new Vector3(0, playerRb.velocity.y, moveSpeed);
-
-        IncreaseSpeed();
-
-        direction = input.RetrieveHorizontalInput();
-        isJumping = input.RetrieveJumpInput();
-        rollInput = input.RetrieveRollInput();
-
-        ChangeLane(direction);
-
-        if (isJumping)
+        if (!PlayerHealth.gameOver)
         {
-            Jump();
-        }
+            playerRb.velocity = new Vector3(0, playerRb.velocity.y, moveSpeed);
 
-        if (IsGrounded())
-        {
-            playerAnimator.SetBool("IsGrounded", true);
-            playerAnimator.SetBool("IsJumping", false);
-        }
-        else
-        {
-            playerAnimator.SetBool("IsGrounded", false);
-            playerAnimator.SetBool("IsJumping", true);
-        }
+            IncreaseSpeed();
 
-        if (rollInput)
-        {
+            direction = input.RetrieveHorizontalInput();
+            isJumping = input.RetrieveJumpInput();
+            rollInput = input.RetrieveRollInput();
+
+            ChangeLane(direction);
+
+            if (isJumping)
+            {
+                Jump();
+            }
+
             if (IsGrounded())
             {
-                Roll();
+                playerAnimator.SetBool("IsGrounded", true);
+                playerAnimator.SetBool("IsJumping", false);
             }
             else
             {
-                StartCoroutine(Land());
+                playerAnimator.SetBool("IsGrounded", false);
+                playerAnimator.SetBool("IsJumping", true);
             }
+
+            if (rollInput)
+            {
+                if (IsGrounded())
+                {
+                    Roll();
+                }
+                else
+                {
+                    StartCoroutine(Land());
+                }
+            }
+        }
+        else{
+            playerAnimator.SetBool("GameOver", true);
+            playerAnimator.SetBool("IsGrounded", false);
         }
     }
 
@@ -247,7 +254,6 @@ public class Movement : MonoBehaviour
     void ChangeTargetPosition(int laneIndex)
     {
         CheckIfNearMiss();
-        playerAnimator.SetTrigger("IsChangingLane");
         isMoving = true;
         currentLane = laneIndex;
         targetPositionX = laneManager.GetLanePosition(laneIndex);

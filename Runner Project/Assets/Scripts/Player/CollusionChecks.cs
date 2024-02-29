@@ -16,7 +16,7 @@ public class CollusionChecks : MonoBehaviour
         if (other.gameObject.CompareTag("Coin"))
         {
             other.gameObject.SetActive(false);
-            ScoreManager.coinAmount++;
+            ScoreManager.Instance.coinAmount++;
         }
     }
 }

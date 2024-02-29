@@ -23,6 +23,8 @@ public class MapGeneration : MonoBehaviour
     {
         GameObject objects = GameObject.Find("PatternObjects");
 
+        patternObjects.Clear();
+
         patternObjects.Add("LowObstacle", objects.transform.Find("LowObstacle").gameObject);
         patternObjects.Add("WallObstacle", objects.transform.Find("WallObstacle").gameObject);
         patternObjects.Add("Coin", objects.transform.Find("Coin").gameObject);

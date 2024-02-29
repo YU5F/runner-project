@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    private int currentScore = 0;
-    public static int coinAmount = 0;
+    public int currentScore = 0;
+    public int coinAmount = 0;
+    public GameOverScreen GameOverScreen;
     private int increaseAmount = 11;
 
     [SerializeField]
@@ -33,11 +34,19 @@ public class ScoreManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        currentScore += increaseAmount * scoreMultiplier;
+        if (!PlayerHealth.gameOver)
+        {
+            currentScore += increaseAmount * scoreMultiplier;
+        }
     }
 
     void Update()
     {
+        if(PlayerHealth.gameOver){
+            GameOverScreen.ActivateGameOverScreen(currentScore);
+            return;
+        }
+        
         patternChangeTimer += Time.deltaTime;
 
         if (patternChangeTimer >= 0.1 && scoreMultiplier < maxMultiplier)

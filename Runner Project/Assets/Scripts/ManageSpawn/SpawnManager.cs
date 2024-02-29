@@ -34,8 +34,8 @@ public class SpawnManager : MonoBehaviour
 
     void Update()
     {
-        SpawnObstacles();
         UpdatePattern();
+        SpawnObstacles();
     }
 
     private void SpawnObstacles()
