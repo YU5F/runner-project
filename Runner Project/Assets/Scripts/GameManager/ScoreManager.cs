@@ -10,7 +10,7 @@ public class ScoreManager : MonoBehaviour
 
     [SerializeField]
     [Range(1, 5)]
-    private int scoreMultiplier = 1;
+    public int scoreMultiplier = 1;
 
     [SerializeField]
     [Range(0, 100)]
@@ -46,7 +46,7 @@ public class ScoreManager : MonoBehaviour
             GameOverScreen.ActivateGameOverScreen(currentScore);
             return;
         }
-        
+
         patternChangeTimer += Time.deltaTime;
 
         if (patternChangeTimer >= 0.1 && scoreMultiplier < maxMultiplier)
